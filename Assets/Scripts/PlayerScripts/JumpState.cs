@@ -15,13 +15,13 @@ public class JumpState: BaseState
             JumpForce=Pc.JumpForce; // nếu lực nhảy chưa được truyền thì truyền theo lực nhảy default của Player
         }
         Pc.PushUp(JumpForce);
-        Pc.An.SetInteger("State",(int)StateEnum.Jump); 
+        Pc.An.SetInteger(AnimatorVariable.State,(int)StateEnum.Jump); 
     }
     public override void UpdateState()
     {
         DelayJumpWall-=Time.deltaTime;
         DelayDoubleJump-=Time.deltaTime;
-        Pc.MoveForward(Pc.Speed,Pc.move);
+        Pc.MoveForward(Pc.speed,Pc.move);
         if(Pc.IsWall && Pc.move != 0 && DelayJumpWall<0){ // Đang nhảy thì chạm tường và di chuyển sát vào để bám
             Pc.Psm.ChangeState(Pc.Psm.SlideState);
             Pc.DoubleJump=true;

@@ -6,9 +6,10 @@ public class PlayerController : MonoBehaviour
 {   // Tạo 1 instance duy nhất của class này để các class khác truy cập dễ dàng
     public static PlayerController Pc; 
     public float move; // hướng đi
-    public float Speed; // tốc độ nhân vật
+    public float speed; // tốc độ nhân vật
     public float JumpForce; // Lực nhảy
     public float DoubleJumpForce; // Lực nhảy DoubleJump
+    public float jumpForceEnemy; // Lực nhảy khi nhảy lên đầu Enemy
     public bool DoubleJump ; // Kiểm tra liệu được nhảy doubleJump ko
     public bool IsGround;
     public bool IsWall;
@@ -41,10 +42,10 @@ public class PlayerController : MonoBehaviour
     {
         Rb.velocity=new Vector2(MoveSpeed*Direction,Rb.velocity.y);
         if(Direction!=0){
-            Pc.flip();
+            Pc.Flip();
         }
     }
-    public void flip() // Lật hướng đi của Player
+    public void Flip() // Lật hướng đi của Player
     {
         if(move == 1){
             transform.localRotation=quaternion.Euler(0,0,0);
@@ -54,18 +55,22 @@ public class PlayerController : MonoBehaviour
             IsFacingRight = false;
         }
     }
-    public void PushUp(float ForcePush) // làm player nhảy lên
+    public void PushUp(float ForcePush) // làm player bật lên
     {
         Rb.velocity = new Vector2(Rb.velocity.x,ForcePush);
     }
-    public void StopDoubleJump()
+    public void StopDoubleJump() // Event được gọi khi hết Animation DoubleJump
     {
         Psm.ChangeState(Psm.FallState);
     }
-    void OnCollisionStay2D(Collision2D Object)
+    void OnCollisionEnter2D(Collision2D Object) 
     {
-        if(Object.collider.CompareTag("DeadObjects")){
-            Debug.Log("Dead");
+        if(Object.gameObject.GetComponent<BaseEnemy>() != null)
+        {
+            Debug.Log("Enemy");
+        }
+        if(Object.collider.CompareTag(Tags.DeadObjects)){
+            Debug.Log("DeadObject");
         }
     }
 }

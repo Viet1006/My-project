@@ -7,5 +7,5 @@ public enum StateEnum //Đánh số cho các trạng thái
     Climb=4,
     DoubleJump=5,
     On = 6 , // Trap kích hoạt
-    DetectPlayer =7, // Trap phát hiện player
+    DetectPlayer =7, // Phát hiện player
 }

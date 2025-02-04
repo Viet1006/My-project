@@ -4,12 +4,12 @@ public class RunState : BaseState
     PlayerController Pc=PlayerController.Pc;
     public override void EnterState()
     {
-        Pc.An.SetInteger("State",(int)StateEnum.Run);
+        Pc.An.SetInteger(AnimatorVariable.State,(int)StateEnum.Run);
         Pc.ParticlePlayer.RunParticle.Play();
     }
     public override void UpdateState()
     {
-        Pc.MoveForward(Pc.Speed,Pc.move);
+        Pc.MoveForward(Pc.speed,Pc.move);
         if(Pc.move==0)
         {
             Pc.Psm.ChangeState(Pc.Psm.IdleState);

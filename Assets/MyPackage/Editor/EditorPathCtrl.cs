@@ -65,6 +65,7 @@ class EditPathCtrl : Editor{
     }
     void Draw() // Vẽ đường nối các điểm , các chấm tại các điểm
     {
+        if(PathFollower.WayPoint.Count ==0) return;
         Handles.color = Color.red;
         for (int i = 0; i < PathFollower.WayPoint.Count - 1; i++)
         {
@@ -73,7 +74,6 @@ class EditPathCtrl : Editor{
             Handles.DrawWireDisc(PathFollower.WayPoint[i], Vector3.forward, PathFollower.handleRadius);
             Handles.Label(PathFollower.WayPoint[i] + new Vector2(0.2f, 0.2f), i.ToString(), EditorStyles.boldLabel);
         }
-
         if (PathFollower.loop && PathFollower.WayPoint.Count > 1)
         {
             Handles.color = Color.red;

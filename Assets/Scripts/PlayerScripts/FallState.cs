@@ -5,11 +5,11 @@ public class FallState:BaseState
     PlayerController Pc= PlayerController.Pc; // Rút gọn mỗi lần tham chiếu đến PlayerController 
     public override void EnterState()
     {
-        Pc.An.SetInteger("State",(int)StateEnum.Fall);
+        Pc.An.SetInteger(AnimatorVariable.State,(int)StateEnum.Fall);
     }
     public override void UpdateState()
     {
-        Pc.MoveForward(Pc.Speed,Pc.move);
+        Pc.MoveForward(Pc.speed,Pc.move);
         //  move khác 0 để xác nhận user muốn bám
         if(Pc.IsWall && Pc.move != 0) {
             Pc.Psm.ChangeState(Pc.Psm.SlideState);

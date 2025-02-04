@@ -19,6 +19,7 @@ public class PathFollower : MonoBehaviour
             return WayPoint[targetIndex];
         }
     }
+    [Tooltip("This value determines how fast the object moves (units per second).")]
     public float speed;
     [Tooltip("The radius surround a waypoint that you want move or remove during editing mode")]
     public float handleRadius = 0.5f; 
@@ -85,9 +86,9 @@ public class PathFollower : MonoBehaviour
     /// </summary>
     public void NextTargetSet() 
     {
-        targetIndex = GetNextIndex();
+        targetIndex = _GetNextIndex();
     }
-    private int GetNextIndex()
+    private int _GetNextIndex()
     {
         if(loop){
             if(targetIndex == WayPoint.Count-1){

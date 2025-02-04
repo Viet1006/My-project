@@ -4,7 +4,7 @@ public class IdleState:BaseState
     PlayerController Pc= PlayerController.Pc; // Rút gọn mỗi lần tham chiếu đến PlayerController 
     public override void EnterState()
     {
-        Pc.An.SetInteger("State",(int)StateEnum.Idle);
+        Pc.An.SetInteger(AnimatorVariable.State,(int)StateEnum.Idle);
         Pc.Rb.velocity = Vector2.zero;
     }
     public override void UpdateState()

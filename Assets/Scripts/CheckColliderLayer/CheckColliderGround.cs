@@ -16,6 +16,11 @@ public class CheckColliderGround : MonoBehaviour
         if(Object.gameObject.layer == LayerMask.NameToLayer("Ground")){
             PlayerController.Pc.IsGround=true;
         }
+        if(Object.GetComponent<BaseEnemy>() != null){
+            PlayerController.Pc.Psm.JumpState.JumpForce = PlayerController.Pc.jumpForceEnemy;
+            PlayerController.Pc.Psm.ChangeState(PlayerController.Pc.Psm.JumpState);
+            Object.GetComponent<BaseEnemy>().GetHit();
+        }
     }
     void OnTriggerExit2D(Collider2D Object)
     {
