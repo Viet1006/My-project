@@ -11,6 +11,7 @@ TagManager:
   - Wall
   - Ground
   - MovablePlatform
+  - Fruit
   layers:
   - Default
   - TransparentFX

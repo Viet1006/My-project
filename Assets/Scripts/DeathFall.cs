@@ -1,7 +1,7 @@
 using UnityEngine;
 public class DeathFall : MonoBehaviour
 {
-    [SerializeField] float rotationSpeed = 0.03f; // Tốc độ quay die effect
+    [SerializeField] float rotationSpeed = 0.1f; // Tốc độ quay die effect
     Rigidbody2D rb;
     [SerializeField] Vector2 force = new Vector2 (3,4); // Lực đẩy die effect
     void Awake()
@@ -17,6 +17,7 @@ public class DeathFall : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         DestroyAllColliders();
         rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.constraints = RigidbodyConstraints2D.None; 
         if(GetComponent<BaseEnemy>())
         {
             GetComponent<BaseEnemy>().enabled = false;

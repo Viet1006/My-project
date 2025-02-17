@@ -13,7 +13,8 @@ public class RockHead : MonoBehaviour
     RaycastHit2D[] Result = new RaycastHit2D[5]; // Mảng lưu các object dể kiểm tra đổi hướng
     public BoxCollider2D HeadCollider;
     public Animator An;
-    public  float TimeShake,Am,Fre; // Thời gian,biên độ, tần số khi va chạm với wall/ground;
+    bool IsBink;
+    [SerializeField] float TimeShake,Am,Fre; // Thời gian,biên độ, tần số khi va chạm với wall/ground;
     void Start()
     {
         CurrentIndex=-1;
@@ -34,9 +35,11 @@ public class RockHead : MonoBehaviour
                 An.SetTrigger("Hit");
                 ShakeCinemachine.Cinemachine.ShakeCam(transform.position,Am,Fre,TimeShake);
                 Direction = ChangeDirection(ListDirection,ref CurrentIndex);
+                IsBink = true;
             }
         }
-        if(CurrentSpeed <= MaxSpeed) {
+        if(CurrentSpeed <= MaxSpeed && !IsBink) // Nếu vận tốc chưa đạt tốc độ tối đa và không bị blink
+        {
             CurrentSpeed += Accleration * Time.deltaTime; // Mỗi 1s vận tốc tăng lên Accleration
             HeadRb.velocity = Direction * CurrentSpeed; // Cập nhật vận tốc
         }
@@ -48,6 +51,7 @@ public class RockHead : MonoBehaviour
     public void EndChangeTag()
     {
         gameObject.tag = Tags.Untagged;
+        IsBink = false;
     }
     // Thay đổi Direction dựa vào list Direction được thêm từ trước
     Vector2 ChangeDirection(List<DirectionEnum> _ListDirection,ref int Index) 

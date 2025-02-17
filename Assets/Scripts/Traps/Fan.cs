@@ -1,7 +1,7 @@
 using UnityEngine;
 public class Fan : MonoBehaviour
 {
-    public static float PushForce =15;
+    public static float PushForce = 35;
     public float TimeOn;
     public float TimeOff;
     Animator An;
@@ -12,7 +12,6 @@ public class Fan : MonoBehaviour
         WindZone = transform.GetChild(1).gameObject;
         An=GetComponent<Animator>();
         On();
-        
     }
     void On()
     {

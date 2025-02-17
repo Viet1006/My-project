@@ -9,6 +9,7 @@ public class CheckColliderGround : MonoBehaviour
             PlayerController.Pc.Psm.JumpState.JumpForce = TrampolineController.PushForce;
             PlayerController.Pc.Psm.ChangeState(PlayerController.Pc.Psm.JumpState); break;
             case Tags.Windup:
+            if(PlayerController.Pc.Psm.CurrentState == PlayerController.Pc.Psm.InWindUpState) break;
             PlayerController.Pc.Psm.ChangeState(PlayerController.Pc.Psm.InWindUpState); break;
             case Tags.MovablePlatform:
             transform.parent.SetParent(Object.transform); break;
@@ -20,6 +21,7 @@ public class CheckColliderGround : MonoBehaviour
             PlayerController.Pc.Psm.JumpState.JumpForce = PlayerController.Pc.jumpForceEnemy;
             PlayerController.Pc.Psm.ChangeState(PlayerController.Pc.Psm.JumpState);
             Object.GetComponent<BaseEnemy>().GetHit();
+            ShakeCinemachine.Cinemachine.ShakeCam(transform.position,3,1,0.1f);
         }
     }
     void OnTriggerExit2D(Collider2D Object)

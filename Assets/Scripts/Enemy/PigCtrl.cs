@@ -8,8 +8,7 @@ public class PigCtrl : BaseEnemy
     [SerializeField] float idleTime;
     float idleTimeRemaining;
     [SerializeField] float speedAngry;
-    delegate void behaviour();
-    behaviour currentBehaviour;
+    [SerializeField] private ParticleSystem runAngryParticle;
     public override void GetHit()
     {
         if(currentBehaviour == AngryBehaviour) // Get hit lần 2 thì chết
@@ -18,8 +17,11 @@ public class PigCtrl : BaseEnemy
             deathFall.enabled = true;
             enabled = false;
             an.SetTrigger(AnimatorVariable.Die);
+            runAngryParticle.Stop();
         }else{
             an.SetTrigger(AnimatorVariable.GetHit);
+            runAngryParticle.Play();
+            runParticle.Stop();
         }
         an.SetBool(AnimatorVariable.IsAngry,true);
         currentBehaviour = AngryBehaviour;
@@ -30,6 +32,8 @@ public class PigCtrl : BaseEnemy
         pathFollower.TakeMovingControl();
         currentBehaviour = PatrolBehaviour;
         an = GetComponent<Animator>();
+        runParticle.Stop();
+        runAngryParticle.Stop();
     }
     void Update()
     {
@@ -39,7 +43,7 @@ public class PigCtrl : BaseEnemy
     {
         pathFollower.MoveToNextPoint(speed);
         if(pathFollower.IsOnTarget())
-        {
+        {runParticle.Stop();
             currentBehaviour = IdleBehaviour;
             idleTimeRemaining = idleTime;
             an.SetInteger(AnimatorVariable.State,(int)StateEnum.Idle);
@@ -54,6 +58,7 @@ public class PigCtrl : BaseEnemy
             pathFollower.NextTargetSet();
             FlipToTarget(pathFollower.targetPos);
             an.SetInteger(AnimatorVariable.State,(int)StateEnum.Run);
+            runParticle.Play();
         }
     }
     void AngryBehaviour()

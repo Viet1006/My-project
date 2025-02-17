@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TrampolineController : MonoBehaviour
 {
-       public static float PushForce = 18f;
+       public static float PushForce = 21f;
        Animator An;
        void Start()
        {

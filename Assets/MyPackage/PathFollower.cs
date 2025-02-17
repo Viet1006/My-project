@@ -36,7 +36,7 @@ public class PathFollower : MonoBehaviour
     {
         cached_Transform = transform;
         if(WayPoint.Count==0){
-            Debug.Log(transform.position + "This positon has object without waypoint");
+            Debug.LogWarning(transform.position + "This positon has object without waypoint");
             enabled=false;
         }else{
             transform.position=WayPoint[0];
@@ -68,7 +68,7 @@ public class PathFollower : MonoBehaviour
     /// </param>
     public void MoveToNextPoint(float speed)
     {
-        cached_Transform.position = Vector2.MoveTowards(transform.position,WayPoint[targetIndex],speed*Time.fixedDeltaTime);
+        cached_Transform.position = Vector2.MoveTowards(transform.position, WayPoint[targetIndex], speed * Time.deltaTime);
     }
     /// <summary>
     /// This method allow you check whether the object has reached the target or not
@@ -90,6 +90,9 @@ public class PathFollower : MonoBehaviour
     }
     private int _GetNextIndex()
     {
+        if(WayPoint.Count == 1){
+            return 0;
+        }
         if(loop){
             if(targetIndex == WayPoint.Count-1){
                 return 0;

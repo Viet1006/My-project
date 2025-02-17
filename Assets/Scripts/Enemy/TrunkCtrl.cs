@@ -7,25 +7,18 @@ public class TrunkCtrl : AttackableEnemy
     [Tooltip("Thời gian đứng Idle sau khi đến đích patrol")]
     [SerializeField] float idleTime = 0.7f;
     float idleTimeRemaining;
-    delegate void behaviour();
-    behaviour currentBehaviour;
-    Transform transformEmiter;
     [SerializeField] GameObject trunkBullet;
-    public override void GetHit()
-    {
-        
-    }
     void Start()
     {
         pathFollower = GetComponent<PathFollower>();
         pathFollower.TakeMovingControl();
         currentBehaviour = PatrolBehaviour;
         an = GetComponent<Animator>();
-        transformEmiter = transform.GetChild(0).transform;
+        transformEmitter = transform.GetChild(0);
+        runParticle.Stop();
     }
     void Update()
     {
-        raycastEmiter = transformEmiter.position;
         currentBehaviour();
         if(DetechPlayer())
         {
@@ -35,8 +28,10 @@ public class TrunkCtrl : AttackableEnemy
     void PatrolBehaviour()
     {
         pathFollower.MoveToNextPoint(speed);
+        
         if(pathFollower.IsOnTarget())
         {
+            runParticle.Stop();
             currentBehaviour = IdleBehaviour;
             idleTimeRemaining = idleTime;
             an.SetInteger(AnimatorVariable.State,(int)StateEnum.Idle);
@@ -51,6 +46,7 @@ public class TrunkCtrl : AttackableEnemy
             pathFollower.NextTargetSet();
             FlipToTarget(pathFollower.targetPos);
             an.SetInteger(AnimatorVariable.State,(int)StateEnum.Run);
+            runParticle.Play();
         }
     }
     public override void AttackBehaviour()
@@ -59,15 +55,16 @@ public class TrunkCtrl : AttackableEnemy
     }
     public override bool DetechPlayer()
     {
-        return Physics2D.Raycast(raycastEmiter,-transform.right).collider.CompareTag(Tags.Player);
+        return Physics2D.Raycast(transformEmitter.position,-transform.right).collider.CompareTag(Tags.Player);
     }
     public void Attack()
     {
-        Instantiate(trunkBullet,transformEmiter.position,transform.rotation);
+        Instantiate(trunkBullet,transformEmitter.position,transform.rotation);
     }
     public void EndAttack()
     {
         an.SetInteger(AnimatorVariable.State,(int)StateEnum.Run);
         currentBehaviour = PatrolBehaviour;
+        runParticle.Play();
     }
 }

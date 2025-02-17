@@ -1,4 +1,6 @@
 //Tạo các đối tượng của State, quản lý State nào đang chạy và chuyển đổi State
+using System.Diagnostics;
+
 public class PlayerStateMachine 
 {
     public BaseState CurrentState;

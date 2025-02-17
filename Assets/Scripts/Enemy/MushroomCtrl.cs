@@ -7,14 +7,13 @@ public class MushroomCtrl : BaseEnemy
     [Tooltip("Thời gian đứng Idle sau khi đến đích patrol")]
     [SerializeField] float idleTime = 0.7f;
     float idleTimeRemaining;
-    delegate void behaviour();
-    behaviour currentBehaviour;
     void Start()
     {
         pathFollower = GetComponent<PathFollower>();
         pathFollower.TakeMovingControl();
         currentBehaviour = PatrolBehaviour;
         an = GetComponent<Animator>();
+        runParticle.Stop();
     }
     void Update()
     {
@@ -25,6 +24,7 @@ public class MushroomCtrl : BaseEnemy
         pathFollower.MoveToNextPoint(speed);
         if(pathFollower.IsOnTarget())
         {
+            runParticle.Stop();
             currentBehaviour = IdleBehaviour;
             idleTimeRemaining = idleTime;
             an.SetInteger(AnimatorVariable.State,(int)StateEnum.Idle);
@@ -35,6 +35,7 @@ public class MushroomCtrl : BaseEnemy
         idleTimeRemaining -= Time.deltaTime;
         if(idleTimeRemaining <= 0)
         {
+            runParticle.Play();
             currentBehaviour = PatrolBehaviour;
             pathFollower.NextTargetSet();
             FlipToTarget(pathFollower.targetPos);

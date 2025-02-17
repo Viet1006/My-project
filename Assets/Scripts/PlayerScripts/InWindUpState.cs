@@ -5,7 +5,8 @@ public class InWindUpState : BaseState
     PlayerController Pc = PlayerController.Pc;
     public override void EnterState()
     {
-        Pc.An.SetInteger(AnimatorVariable.State,(int)StateEnum.Jump); 
+        Pc.Rb.velocity = Vector2.zero;
+        Pc.An.SetInteger(AnimatorVariable.State,(int)StateEnum.Jump);
     }
     public override void UpdateState()
     {

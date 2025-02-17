@@ -1,5 +1,6 @@
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 // Script này lưu giữ các thuộc tính, phương thức của player 
 // Tạo các đối tượng của các class dùng điều khiển player
 public class PlayerController : MonoBehaviour
@@ -21,6 +22,9 @@ public class PlayerController : MonoBehaviour
     public ParticlePlayer ParticlePlayer;
     public Rigidbody2D Rb;
     public Animator An;
+    public DeathFall deathFall;
+    [SerializeField] GameObject restartButton;
+    bool isAppear;
     void Awake()
     {
         Pc=this;
@@ -28,12 +32,15 @@ public class PlayerController : MonoBehaviour
         Psm.StartState();
         DoubleJump = true;
         ParticlePlayer=GetComponent<ParticlePlayer>();
-        
+        Appear();
     }
     void Update()
     {
         move = Input.GetAxisRaw("Horizontal");
-        Psm.UpdateState();
+        if(!isAppear)
+        {
+            Psm.UpdateState();
+        }
         if(IsGround){
             DoubleJump = true;
         }
@@ -63,14 +70,37 @@ public class PlayerController : MonoBehaviour
     {
         Psm.ChangeState(Psm.FallState);
     }
-    void OnCollisionEnter2D(Collision2D Object) 
+    void OnCollisionStay2D(Collision2D collision)
     {
-        if(Object.gameObject.GetComponent<BaseEnemy>() != null)
+        if((collision.gameObject.GetComponent<BaseEnemy>() != null && collision.transform.position.y + 0.05f> transform.position.y) || (collision.collider.CompareTag(Tags.DeadObjects)))
         {
-            Debug.Log("Enemy");
+            ShakeCinemachine.Cinemachine.ShakeCam(transform.position,3,1,0.1f);
+            deathFall.enabled = true;
+            An.SetTrigger(AnimatorVariable.Die);
+            restartButton.SetActive(true);
+            this.enabled = false;
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(false);
         }
-        if(Object.collider.CompareTag(Tags.DeadObjects)){
-            Debug.Log("DeadObject");
-        }
+    }
+    public void Appear()
+    {
+        isAppear = true;
+        An.SetInteger(AnimatorVariable.State,(int)StateEnum.Appear);
+    }
+    public void EndAppear()
+    {
+        isAppear = false;
+        An.SetInteger(AnimatorVariable.State,(int)StateEnum.Idle);
+    }
+    public void DisAppear()
+    {
+        isAppear = true;
+        An.SetInteger(AnimatorVariable.State,(int)StateEnum.DisAppear);
+    }
+    public void EndDisAppear()
+    {
+        isAppear = false;
+        An.SetInteger(AnimatorVariable.State,(int)StateEnum.Idle);
     }
 }
