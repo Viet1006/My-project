@@ -36,9 +36,9 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        move = Input.GetAxisRaw("Horizontal");
         if(!isAppear)
         {
+            move = Input.GetAxisRaw("Horizontal");
             Psm.UpdateState();
         }
         if(IsGround){
@@ -85,8 +85,9 @@ public class PlayerController : MonoBehaviour
     }
     public void Appear()
     {
-        isAppear = true;
+        Rb.simulated = true;
         An.SetInteger(AnimatorVariable.State,(int)StateEnum.Appear);
+        Rb.velocity = Vector2.zero;
     }
     public void EndAppear()
     {
@@ -95,12 +96,9 @@ public class PlayerController : MonoBehaviour
     }
     public void DisAppear()
     {
+        Rb.simulated = false;
         isAppear = true;
         An.SetInteger(AnimatorVariable.State,(int)StateEnum.DisAppear);
-    }
-    public void EndDisAppear()
-    {
-        isAppear = false;
-        An.SetInteger(AnimatorVariable.State,(int)StateEnum.Idle);
+        Rb.velocity = Vector2.zero;
     }
 }
